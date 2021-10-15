@@ -42,7 +42,7 @@
 # 
 # # Libraries
 
-# In[ ]:
+
 
 
 import os #paths to file
@@ -69,7 +69,7 @@ warnings.filterwarnings("ignore")
 
 # # Load the datasets
 
-# In[ ]:
+
 
 
 #load the dataset
@@ -86,7 +86,7 @@ te_df= pd.read_csv(r"/Users/mirandacheng7/Downloads/Loan Prediction/test_Y3wMUE5
 # 
 # Training set:
 
-# In[ ]:
+
 
 
 #display the first 5 rows of the training set
@@ -95,8 +95,6 @@ tr_df.head()
 
 # Testing set:
 
-# In[ ]:
-
 
 #display the first 5 rows of the testing set
 te_df.head()
@@ -104,7 +102,7 @@ te_df.head()
 
 # Size of each data set:
 
-# In[ ]:
+
 
 
 #print the size of each dataset
@@ -115,7 +113,7 @@ print(f"training set (row, col): {tr_df.shape}\n\ntesting set (row, col): {te_df
 
 # ### Find the missing values
 
-# In[ ]:
+
 
 
 tr_df.isnull().sum()
@@ -124,7 +122,6 @@ tr_df.isnull().sum()
 # ### Fill the missing values
 # As Gender, Married, credit_history, and self_employed are categorical data, we will replace the missing value with the most requent value. 
 
-# In[ ]:
 
 
 #filling the missing data with mode
@@ -136,14 +133,13 @@ for col in null_cols:
 tr_df.isnull().sum().sort_values
 
 
-# In[ ]:
 
 
 #check if there are any duplicates
 tr_df.duplicated().any()
 
 
-# In[ ]:
+
 
 
 #remove the id column for both datasets as it's not needed
@@ -159,7 +155,6 @@ print(f"training set (row, col): {tr_df.shape}\n\ntesting set (row, col): {te_df
 # First, let's split data into categorical and numberical data.
 # For categorical data, we want to show counts in each categorical bin using bars, for numberic data, we want to see the distribution. 
 
-# In[ ]:
 
 
 #categorical columns
@@ -174,14 +169,6 @@ loan_num =  tr_df[num]
 loan_cat = tr_df[cat]
 
 
-# In[ ]:
-
-
-loan_cat
-
-
-# In[ ]:
-
 
 #display the counts of observations using bars for each categorical column
 for i in loan_cat:
@@ -195,7 +182,7 @@ for i in loan_cat:
     plt.show()
 
 
-# In[ ]:
+
 
 
 #display the distribution of each numerical column
@@ -207,7 +194,7 @@ for i in loan_num:
 
 # Display categorical data by Loan status.
 
-# In[ ]:
+
 
 
 for i in cat[:-1]: 
@@ -225,7 +212,6 @@ for i in cat[:-1]:
 
 # change categorical data into numeric format
 
-# In[ ]:
 
 
 from sklearn.preprocessing import LabelEncoder
@@ -235,20 +221,15 @@ for col in cols:
     tr_df[col] = le.fit_transform(tr_df[col].astype(str))
 
 
-# In[ ]:
 
 
 tr_df['Dependents'].value_counts()
 
 
-# In[ ]:
 
-
-# As 3+ in Dependents column has not been changed to numberic, so we should replace it manually
+#As 3+ in Dependents column has not been changed to numberic, so we should replace it manually
 tr_df['Dependents'] = np.where((tr_df.Dependents == '3+'), 3, tr_df.Dependents)
 
-
-# In[ ]:
 
 
 #plotting the correlation matrix
@@ -258,14 +239,13 @@ sns.heatmap(tr_df.corr(), annot = True, cmap='BuPu')
 
 # Train-Test Split
 
-# In[ ]:
+
 
 
 X= tr_df.drop(columns = ['Loan_Status'], axis = 1)
 y = tr_df['Loan_Status']
 
 
-# In[ ]:
 
 
 #Split the data into train-test split:
@@ -288,7 +268,7 @@ print(f"X_training set (row, col): {X_train.shape}\n\ny_train (row, col): {y_tra
 #   </td></tr>
 # </table>
 
-# In[ ]:
+
 
 
 LR = LogisticRegression()
@@ -352,7 +332,6 @@ print(f"{round(DT_SC*100,2)}% Accurate")
 # 
 # 
 
-# In[ ]:
 
 
 RF = RandomForestClassifier()
@@ -370,7 +349,6 @@ print(f"{round(RF_SC*100,2)}% Accurate")
 
 # ## Hyperparameter tuning
 
-# In[ ]:
 
 
 RF_tuning = RandomForestClassifier(n_estimators= 70,min_samples_split=25,max_depth = 7, max_features= 1)
@@ -386,7 +364,7 @@ RF_tuning_SC = accuracy_score(y_predict,y_test)
 print(f"{round(RF_tuning_SC*100,2)}% Accurate")
 
 
-# In[ ]:
+
 
 
 score = [DT_SC,RF_SC,RF_tuning_SC,LR_SC]
